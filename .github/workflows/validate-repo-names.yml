@@ -1,0 +1,28 @@
+name: Validate Repository Names
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-repo-names:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Install requests library
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Validate repository names
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORGANIZATION: your-org-name
+        run: |
+          python .github/scripts/validate_repos.py
